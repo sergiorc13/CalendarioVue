@@ -55,44 +55,90 @@ const handleEventoAgregado = () => {
 
 
 <template>
-  <div class="cell" @click="openModalFromCell">
-    <p>{{ props.valor }}</p>
-    <ul>
+  <div class="cell">
+
+  
+  <p>{{ props.valor }}</p>
+  <ul>
       <li v-for="event in getEventsForCurrentDay()" :key="event.id">
         {{ event.name }}
       </li>
     </ul>
+  <button class="añadir" @click="openModalFromCell">+</button>
   </div>
   <Modal :showModal="showModal" :closeModal="closeModal" :selectedDate="props.valor || ''" />
 </template>
 
 <style>
-.cell,
-.cell input {
-  height: 2.25em;
-  line-height: 2.25;
-  font-size: 22.5px;
+.cell {
+  
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  
 }
 
-.cell:hover{
+.añadir {
+  background-color: #007bff;
+  font-size: 15px;
+  text-align: center;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50px;
   cursor: pointer;
-
 }
 
-.cell span {
-  padding: 0 6px;
+.añadir:hover {
+  background-color: #0056b3;
 }
 
-.cell input {
-  width: 100%;
-  box-sizing: border-box;
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 
+li {
+  margin-bottom: 5px;
+  border-radius: 10px;
+  background-color: rgb(255, 110, 110);
+  color: white;
+}
+
+/* Estilos para el modal (ajustar según necesidades) */
 .modal {
   display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal.is-active {
-  display: flex;
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 </style>
+
