@@ -47,17 +47,14 @@ const tablaMes = computed(() =>{
    <table>
     <thead>
       <tr>
-        <th></th>
         <th v-for="c in cols" :key="c">{{ c }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="i in props.ROWS" :key="i">
-        <th></th>
+      <tr v-for="i in props.ROWS" :key="i">        
         <td v-for="(c, j) in cols" :key="c">
           <celdaCalendario :valor="tablaMes[i-1][j]"/>
         </td>
-        
       </tr>
     </tbody>
   </table>
@@ -75,13 +72,17 @@ table {
   width: 100%;
 }
 
+.margen {
+  background-color: white;
+}
+
 th {
   background-color: #30449f;
   color: white;
 }
 
 tr:first-of-type th {
-  width: 100px;
+  width: 25px;
 }
 
 tr:first-of-type th:first-of-type {

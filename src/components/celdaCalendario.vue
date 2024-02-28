@@ -56,9 +56,7 @@ const handleEventoAgregado = () => {
 
 <template>
   <div class="cell">
-
-  
-  <p>{{ props.valor }}</p>
+  <h3 v-if="props.valor">{{ props.valor }}</h3>
   <ul>
       <li v-for="event in getEventsForCurrentDay()" :key="event.id">
         {{ event.name }}
@@ -66,7 +64,9 @@ const handleEventoAgregado = () => {
     </ul>
   <button class="añadir" @click="openModalFromCell">+</button>
   </div>
+  
   <Modal :showModal="showModal" :closeModal="closeModal" :selectedDate="props.valor || ''" />
+  
 </template>
 
 <style>
