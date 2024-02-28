@@ -9,7 +9,7 @@ interface Props {
 
 const { showModal, closeModal, selectedDate } = defineProps<Props>();
 
-const eventeventName.value = ''; // Limpiar el campo de texto después de añadir el       Name = ref('');
+const eventName = ref('');
 
 const addEvent = async () => {
   try {
