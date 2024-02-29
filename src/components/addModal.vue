@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, onMounted } from 'vue';
 
 interface Props {
   showModal: boolean;
@@ -24,14 +24,8 @@ const addEvent = async () => {
 
     if (response.ok) {
       console.log('Evento añadido correctamente.');
-      // Llamar a fetchEvents para actualizar la lista de eventos después de agregar uno nuevo
-      const fetchEvents = async () => {
-        const response = await fetch('http://localhost:3000/events');
-        const data = await response.json();
-        console.log(data);
-      };
+      location.reload();
 
-      fetchEvents();
     } else {
       console.error('Error al añadir el evento.');
     }
@@ -42,6 +36,8 @@ const addEvent = async () => {
   // Cerrar el modal después de añadir el evento, independientemente del resultado
   props.closeModal();
 };
+
+
 </script>
 
 

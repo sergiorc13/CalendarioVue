@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeMount } from 'vue';
 import Modal from './addModal.vue';
 
 interface Props {
@@ -25,7 +25,7 @@ const closeModal = () => {
 };
 
 // Método para obtener los eventos del servidor JSON
-const fetchEvents = async () => {
+ const fetchEvents = async () => {
   try {
     const response = await fetch('http://localhost:3000/events');
     const data = await response.json();
@@ -41,15 +41,21 @@ const getEventsForCurrentDay = () => {
   return events.value.filter((event: any) => event.date === props.valor) as Array<any>;
 };
 
-// Llamar a fetchEvents al montar el componente
+//Montar el componente automaricamente
 onMounted(() => {
   fetchEvents();
 });
 
-// Manejar el evento emitido desde el modal cuando se agrega un nuevo evento
-const handleEventoAgregado = () => {
-  fetchEvents(); // Volver a cargar los eventos después de agregar uno nuevo
+//Editar el evento
+const openModalFromCellEditar = () => {
+  showModal.value = true;
 };
+
+
+
+
+
+
 </script>
 
 <template>
@@ -57,11 +63,12 @@ const handleEventoAgregado = () => {
     <h3>{{ props.valor }}</h3>
     <ul>
       <li v-for="event in getEventsForCurrentDay()" :key="event.id">
-        {{ event.name }}
+        {{ event.name}} <br>
+        <button @click="openModalFromCell">Editar</button>
       </li>
     </ul>
     <!-- Botón para abrir el modal, pasa props.valor como selectedDate -->
-    <button class="añadir" @click="openModalFromCell">+</button>
+    <button class="añadir" @click="openModalFromCellEditar">+</button>
   </div>
   <!-- Renderiza el modal solo si showModal es true -->
   <Modal v-if="showModal" :showModal="showModal" :closeModal="closeModal" :selectedDate="props.valor || ''" />
@@ -78,7 +85,7 @@ const handleEventoAgregado = () => {
 }
 
 .añadir {
-  background-color: #007bff;
+  background-color: #0056b3;
   font-size: 15px;
   text-align: center;
   color: #fff;
@@ -89,7 +96,7 @@ const handleEventoAgregado = () => {
 }
 
 .añadir:hover {
-  background-color: #0056b3;
+  background-color: #003a77;
 }
 
 ul {
@@ -100,10 +107,10 @@ ul {
 li {
   margin-bottom: 5px;
   border-radius: 10px;
-  background-color: rgb(0, 183, 255);
-  padding: 10px;
+  background-color: rgb(183, 0, 255);
+  padding: 8px;
   color: white;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 /* Estilos para el modal (ajustar según necesidades) */

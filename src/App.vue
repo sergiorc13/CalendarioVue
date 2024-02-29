@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import calendarioMes from './components/calendarioMes.vue';
 import { ref } from 'vue'
-const mes = ref(1)
-const anio = ref(2024)
+
+//Mostrar por defecto el mes y el año actual
+
+const mes = ref(new Date().getMonth() + 1)
+const anio = ref(new Date().getFullYear())
+
 </script>
+
 <template>
+  <div>
+    <h2>CalendarioVue</h2>
+  </div>
     <div class="elegir">
       <label for="mes"> Mes: </label>
-        <input type="number" v-model="mes" min="1" max="12"/>
+        <input type="number" v-model="mes" min="1" max="12"/> 
       <label for="anio"> Año: </label>
         <input type="number" v-model="anio" min="2000" max="2050"/>
     </div><br><br>
@@ -15,10 +23,36 @@ const anio = ref(2024)
 </template>
 
 <style>
-  .elegir{
+ .elegir {
+    text-align: center;
     margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  h2 {
+    color: blue;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;    
+  }
+
+  label {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  input {
+    text-align: center;
+    padding: 4px ;
+    font-size: 16px;
+    border: 1px solid #0025c7;
+    border-radius: 4px;
+    margin-left: 5px;
+    margin-right: 10px;
   }
 </style>

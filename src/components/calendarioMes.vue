@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed } from 'vue'
+import {computed, mergeProps } from 'vue'
 import celdaCalendario from '@/components/celdaCalendario.vue'
 
 interface Props{
@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<Props>(),{
             ROWS: 5,
             anio: 2000,
             mes: 1
-
-
 })
 
 
