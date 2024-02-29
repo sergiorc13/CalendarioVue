@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { defineProps, ref } from 'vue';
 
 interface Props {
   showModal: boolean;
@@ -7,10 +7,11 @@ interface Props {
   selectedDate: string; // Prop para la fecha seleccionada
 }
 
-const { showModal, closeModal, selectedDate } = defineProps<Props>();
+const props = defineProps<Props>();
 
 const eventName = ref('');
 
+// Método para agregar un nuevo evento
 const addEvent = async () => {
   try {
     const response = await fetch('http://localhost:3000/events', {
@@ -18,14 +19,13 @@ const addEvent = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: Math.floor(Math.random() * 1000), name: eventName.value, date: selectedDate }),
+      body: JSON.stringify({ id: Math.floor(Math.random() * 1000), name: eventName.value, date: props.selectedDate }),
     });
 
     if (response.ok) {
       console.log('Evento añadido correctamente.');
       // Llamar a fetchEvents para actualizar la lista de eventos después de agregar uno nuevo
       const fetchEvents = async () => {
-        //Mostrar los eventos en el DOM 
         const response = await fetch('http://localhost:3000/events');
         const data = await response.json();
         console.log(data);
@@ -40,7 +40,7 @@ const addEvent = async () => {
   }
 
   // Cerrar el modal después de añadir el evento, independientemente del resultado
-  closeModal();
+  props.closeModal();
 };
 </script>
 

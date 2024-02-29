@@ -13,7 +13,7 @@ interface Props{
 const props = withDefaults(defineProps<Props>(),{
             cols: ()=> ['Lunes', 'Martes', 'Miércoles', 'Jueves','Viernes','Sábado', 'Domingo'],
             COLS: 7,
-            ROWS: 6,
+            ROWS: 5,
             anio: 2000,
             mes: 1
 
@@ -32,7 +32,7 @@ const anadevalorSecuencial = (numero:number, valor:string, celdas:string[][]) =>
 
 const tablaMes = computed(() =>{
   const celdas = Array.from(Array(props.COLS).keys()).map(() =>
-                        Array.from(Array(props.ROWS).keys()).map(() => '- '))
+                        Array.from(Array(props.ROWS).keys()).map(() => ''))
   const primerDia = new Date(`${props.anio}-${props.mes}-1`)
   const posicionPrimerDia = [6,0,1,2,3,4,5][primerDia.getDay()]
   const numDiasMes = new Date(props.anio, props.mes, 0).getDate()

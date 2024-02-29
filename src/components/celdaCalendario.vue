@@ -11,19 +11,17 @@ const props = defineProps<Props>();
 // Variable para controlar la visibilidad del modal
 const showModal = ref(false);
 
-// Lista de eventos obtenidos del servidor JSON
+// Variable para almacenar los eventos
 const events = ref([]);
 
 // Método para abrir el modal al pinchar en la celda
 const openModalFromCell = () => {
   showModal.value = true;
-  console.log("Modal creado correctamente");
 };
 
 // Método para cerrar el modal
 const closeModal = () => {
   showModal.value = false;
-  console.log("Modal cerrado correctamente");
 };
 
 // Método para obtener los eventos del servidor JSON
@@ -31,6 +29,7 @@ const fetchEvents = async () => {
   try {
     const response = await fetch('http://localhost:3000/events');
     const data = await response.json();
+    // Asigna los eventos obtenidos a la variable local events
     events.value = data;
   } catch (error) {
     console.error('Error al obtener los eventos:', error);
@@ -53,21 +52,21 @@ const handleEventoAgregado = () => {
 };
 </script>
 
-
 <template>
-  <div class="cell">
-  <h3 v-if="props.valor">{{ props.valor }}</h3>
-  <ul>
+  <div class="cell" v-if="props.valor">
+    <h3>{{ props.valor }}</h3>
+    <ul>
       <li v-for="event in getEventsForCurrentDay()" :key="event.id">
         {{ event.name }}
       </li>
     </ul>
-  <button class="añadir" @click="openModalFromCell">+</button>
+    <!-- Botón para abrir el modal, pasa props.valor como selectedDate -->
+    <button class="añadir" @click="openModalFromCell">+</button>
   </div>
-  
-  <Modal :showModal="showModal" :closeModal="closeModal" :selectedDate="props.valor || ''" />
-  
+  <!-- Renderiza el modal solo si showModal es true -->
+  <Modal v-if="showModal" :showModal="showModal" :closeModal="closeModal" :selectedDate="props.valor || ''" />
 </template>
+
 
 <style>
 .cell {
@@ -101,8 +100,10 @@ ul {
 li {
   margin-bottom: 5px;
   border-radius: 10px;
-  background-color: rgb(255, 110, 110);
+  background-color: rgb(0, 183, 255);
+  padding: 10px;
   color: white;
+  font-size: 18px;
 }
 
 /* Estilos para el modal (ajustar según necesidades) */
