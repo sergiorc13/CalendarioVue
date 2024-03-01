@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeMount } from 'vue';
 import Modal from './addModal.vue';
+import EditModal from './editModal.vue'; // Import the editModal component
 
 interface Props {
   valor?: string;
@@ -10,6 +11,7 @@ const props = defineProps<Props>();
 
 // Variable para controlar la visibilidad del modal
 const showModal = ref(false);
+const showEditModal = ref(false); // Add a new ref for the editModal
 
 // Variable para almacenar los eventos
 const events = ref([]);
@@ -45,16 +47,12 @@ const getEventsForCurrentDay = () => {
 onMounted(() => {
   fetchEvents();
 });
-
-//Editar el evento
-const openModalFromCellEditar = () => {
-  showModal.value = true;
+const idEvento= ref(0);
+//Editar el evento segun el id
+const openModalFromCellEditar = (eventId: number) => {
+  showEditModal.value = true; // Set showEditModal to true
+  idEvento.value = eventId;
 };
-
-
-
-
-
 
 </script>
 
@@ -64,14 +62,17 @@ const openModalFromCellEditar = () => {
     <ul>
       <li v-for="event in getEventsForCurrentDay()" :key="event.id">
         {{ event.name}} <br>
-        <button @click="openModalFromCell">Editar</button>
+
+        <button @click="openModalFromCellEditar(event.id)">Editar</button>
       </li>
     </ul>
     <!-- Botón para abrir el modal, pasa props.valor como selectedDate -->
-    <button class="añadir" @click="openModalFromCellEditar">+</button>
+    <button class="añadir" @click="openModalFromCell">+</button>
   </div>
   <!-- Renderiza el modal solo si showModal es true -->
-  <Modal v-if="showModal" :showModal="showModal" :closeModal="closeModal" :selectedDate="props.valor || ''" />
+  <Modal v-if="showModal" :showModal="showModal" :idEvento = "idEvento" :closeModal="closeModal" :selectedDate="props.valor || ''" />
+  <!-- Renderiza el editModal solo si showEditModal es true -->
+  <EditModal v-if="showEditModal" :showModal="showEditModal" :idEvento="idEvento" :closeModal="closeModal" :selectedDate="props.valor || ''" :currentEventName="''" />
 </template>
 
 

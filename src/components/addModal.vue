@@ -4,7 +4,8 @@ import { defineProps, ref, onMounted } from 'vue';
 interface Props {
   showModal: boolean;
   closeModal: () => void;
-  selectedDate: string; // Prop para la fecha seleccionada
+  selectedDate?: string; // Prop para la fecha seleccionada
+  idEvento: number;
 }
 
 const props = defineProps<Props>();
@@ -37,10 +38,7 @@ const addEvent = async () => {
   props.closeModal();
 };
 
-
 </script>
-
-
 
 <template>
   <div class="modal" :class="{ 'is-active': showModal }">
@@ -50,6 +48,7 @@ const addEvent = async () => {
         <div class="form-group">
           <label for="eventName">Nombre del Evento:</label>
           <input type="text" id="eventName" v-model="eventName" required>
+          <h1>{{ props.idEvento }}</h1>
         </div>
         <!-- Muestra la fecha seleccionada -->
         <p>Fecha seleccionada: {{ selectedDate }}</p>
@@ -61,8 +60,6 @@ const addEvent = async () => {
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 .modal {
