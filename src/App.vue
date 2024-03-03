@@ -27,7 +27,7 @@ const nombreMes = computed(() => {
     <label for="anio"> Año: </label>
     <input type="number" v-model="anio" min="2000" max="2050"/>
   </div>
-  <h2>{{ nombreMes }}</h2>
+  <h2>{{ nombreMes }} del {{ anio }}</h2>
   
   <calendarioMes :mes="mes" :anio="anio" />
 </template>

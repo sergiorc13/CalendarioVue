@@ -54,7 +54,6 @@ const cerrarModalEmitted = () => {
     <div class="modal-content">
         <h3 class="fecha">{{ props.fecha }}</h3>
         <p class="fecha">Tarea: {{ props.valor }}</p>
-        <p class="fecha">Id: {{ props.id }}</p>
         <input v-model="tareaN" type="text" class="form-control" placeholder="Modificar la tarea">
       <button @click="modificarTarea(tareaN, props.fecha, props.id)">Editar Tarea</button>
       <button @click="cerrarModalEmitted">Volver</button>
