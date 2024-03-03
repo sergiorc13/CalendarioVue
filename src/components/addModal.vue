@@ -1,109 +1,101 @@
 <script setup lang="ts">
-import { defineProps, ref, onMounted } from 'vue';
-
-interface Props {
-  showModal: boolean;
-  closeModal: () => void;
-  selectedDate?: string; // Prop para la fecha seleccionada
-  idEvento: number;
+  import { defineProps, defineEmits, ref } from 'vue';
+  import axios from 'axios';
+  
+  const emit = defineEmits(["cerrar-modal", "actualizarTareas"]);
+  interface Props {
+  valor: string;
+  showModal:boolean
+}
+const tareaN = ref("")
+const agregar = async(tareaNueva:string, fechaNueva:string)=>{
+  try {
+    const nuevaTarea = {
+      tarea: tareaNueva,
+      fecha: fechaNueva
+    }
+    await axios.post(`http://localhost:3000/tareas`, nuevaTarea);
+    console.log("Se ha agregado correctamente")
+    tareaN.value = "";
+    emit("cerrar-modal")
+    emit("actualizarTareas")
+  } catch (error) {
+    console.error('Error al obtener las tareas', error);
+  }
 }
 
 const props = defineProps<Props>();
-
-const eventName = ref('');
-
-// Método para agregar un nuevo evento
-const addEvent = async () => {
-  try {
-    const response = await fetch('http://localhost:3000/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: Math.floor(Math.random() * 1000), name: eventName.value, date: props.selectedDate }),
-    });
-
-    if (response.ok) {
-      console.log('Evento añadido correctamente.');
-      location.reload();
-
-    } else {
-      console.error('Error al añadir el evento.');
-    }
-  } catch (error) {
-    console.error('Error de red:', error);
-  }
-
-  // Cerrar el modal después de añadir el evento, independientemente del resultado
-  props.closeModal();
-};
-
+  const cerrarModal = () => {
+    emit('cerrar-modal');
+  };
+  
+  const cerrarModalEmitted = () => {
+    cerrarModal();
+  };
 </script>
 
 <template>
-  <div class="modal" :class="{ 'is-active': showModal }">
-    <div class="modal-content">
-      <h2>Añadir Evento</h2>
-      <form @submit.prevent="addEvent">
-        <div class="form-group">
-          <label for="eventName">Nombre del Evento:</label>
-          <input type="text" id="eventName" v-model="eventName" required>
-          <h1>{{ props.idEvento }}</h1>
-        </div>
-        <!-- Muestra la fecha seleccionada -->
-        <p>Fecha seleccionada: {{ selectedDate }}</p>
-        <div class="form-group">
-          <button type="submit">Guardar</button>
-          <button type="button" @click="closeModal">Cancelar</button>
-        </div>
-      </form>
-    </div>
+  <div class="modal-overlay" v-show="showModal">
+<div class="modal-container">
+  <div class="modal-header">
+    <span class="modal-close" @click="cerrarModal">X</span>
   </div>
+  <div class="modal-content">
+    <h2>{{ props.valor }}</h2>
+    <input v-model="tareaN" type="text" class="form-control" placeholder="Agregar Tarea">
+    <button @click="agregar(tareaN, props.valor)">Añadir</button>
+    <button @click="cerrarModalEmitted">Cancelar</button>
+  </div>
+</div>
+</div>
 </template>
 
 <style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
+  /* Estilos para el modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 200, 251, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 600px;
+  }
+  
+  .modal-header {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modal-close {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff0000;
+  }
+  
+  .modal-content {
+    padding: 20px;
+  }
 
-.modal.is-active {
-  display: flex;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="date"],
-button {
-  width: 100%;
+  button {
+  width: 30%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
-}
-
-button {
   background-color: #007bff;
   color: white;
   cursor: pointer;
@@ -113,3 +105,4 @@ button:hover {
   background-color: #0056b3;
 }
 </style>
+  
