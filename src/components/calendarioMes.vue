@@ -6,7 +6,6 @@ import modalModificar from './modificarModal.vue';
 import axios from 'axios';
 import { obtenerDatos, modificaDato } from "@/utils/crudAxios"
 
-
 interface Tarea {
   id: number;
   tarea: string;

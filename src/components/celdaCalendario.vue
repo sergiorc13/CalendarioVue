@@ -14,7 +14,6 @@ const props = defineProps<Props>();
 
 <template>
   <div class="celda-calendario">
-    <!--Fecha recogida-->
     <p class="fecha">{{ props.valor }}</p>
   </div>
 </template>
@@ -28,7 +27,7 @@ const props = defineProps<Props>();
   padding: 10px;
 }
 
-  .fecha {
+.fecha {
   font-size: 18px;
   font-weight: bold;
 }
