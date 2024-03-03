@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, defineProps } from 'vue';
-import celdaCalendario from '@/components/celdaCalendario.vue';
+import { computed, ref, onMounted, defineProps } from 'vue'
+import celdaCalendario from '@/components/celdaCalendario.vue'
 import modalVue from "@/components/addModal.vue"
-import modalModificar from './modificarModal.vue';
-import axios from 'axios';
+import modalModificar from './modificarModal.vue'
+import axios from 'axios'
 import { obtenerDatos, modificaDato } from "@/utils/crudAxios"
 
 interface Tarea {
-  id: number;
-  tarea: string;
-  fecha: string;
+  id: number
+  tarea: string
+  fecha: string
 }
 
 interface Props {
-  mes?: number;
-  anio?: number;
-  cols?: string[];
-  COLS?: number;
-  ROWS?: number;
+  mes?: number
+  anio?: number
+  cols?: string[]
+  COLS?: number
+  ROWS?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,11 +26,11 @@ const props = withDefaults(defineProps<Props>(), {
   ROWS: 5,
   anio: 2000,
   mes: 1
-});
+})
 
-const tareas = ref<Tarea[]>([]);
-const showModal = ref(false);
-const showModalMod = ref(false);
+const tareas = ref<Tarea[]>([])
+const showModal = ref(false)
+const showModalMod = ref(false)
 
 const actualizarDatos = async () => {
   try {
@@ -70,11 +70,11 @@ const abrirModalMod = (fecha: string, valor: string, id: number) => {
   fechaModalMod.value = fecha
   valorMod.value = valor
   idMod.value = id
-};
+}
 
 const cerrarModalMod = () => {
   showModalMod.value = false;
-};
+}
 
 
 onMounted(async () => {
@@ -95,23 +95,23 @@ const borrarTarea = async (idBorrar: number) => {
   }
 }
 
-
 const anadevalorSecuencial = (numero: number, valor: string, celdas: string[][]) => {
   const fila = Math.floor(numero / props.COLS);
   const columna = numero % props.COLS;
   celdas[fila][columna] = valor;
 
 
-};
+}
+
 const fechaModal = ref<string>("")
 const abrirModal = (fecha: string) => {
   showModal.value = true;
   fechaModal.value = fecha
-};
+}
 
 const cerrarModal = () => {
   showModal.value = false;
-};
+}
 
 const tablaMes = computed(() => {
   const celdas = Array.from(Array(props.COLS).keys()).map(() =>
@@ -123,9 +123,7 @@ const tablaMes = computed(() => {
   //Recorremos el rango de números para añadir la fecha
   rangoNumeros.map((el, ind) => anadevalorSecuencial(el, `${ind + 1}/${props.mes}/${props.anio}`, celdas))
   return celdas
-});
-
-
+})
 </script>
 
 
@@ -133,36 +131,31 @@ const tablaMes = computed(() => {
   <div class="container mt-5">
     <table class="table table-bordered">
       <thead>
-        <tr>
-            
+        <tr>          
           <!--Recorremos las filas y columnas.-->
-          <th v-for="c in cols" :key="c">{{ c }}</th>
-          
+          <th v-for="c in cols" :key="c">{{ c }}</th>       
         </tr>
       </thead>
       <tbody>
-        <tr v-for="i in props.ROWS" :key="i">
-           
+        <tr v-for="i in props.ROWS" :key="i">     
           <td v-for="(c, j) in cols" :key="c">
             <div class="position-relative">
               <!--Celda calendario va a recibir el valor de la fecha-->
               <celdaCalendario :valor="tablaMes[i - 1][j]" class="p-3" />
               <!--Hacemos un condicional para no permitir la posibilidad de agregar una tarea a una celda sin fecha.-->
               <div v-if="tablaMes[i - 1][j] != ''">
-                <button @dragover="eventoOver" @drop="eventoDrop(tablaMes[i - 1][j])"
-                  @click="abrirModal(tablaMes[i - 1][j])" class="botonAgregar">
-                  +
-                </button>
+                <button @dragover="eventoOver" @drop="eventoDrop(tablaMes[i - 1][j])"@click="abrirModal(tablaMes[i - 1][j])" class="botonAgregar"> + </button>
               </div>
-              <modalVue :showModal="showModal" :valor="fechaModal" @cerrar-modal="cerrarModal" @abrir-modal="abrirModal"
-                @actualizarTareas="actualizarDatos" />
+
+              <!--Modal para agregar tareas-->
+              <modalVue :showModal="showModal" :valor="fechaModal" @cerrar-modal="cerrarModal" @abrir-modal="abrirModal" @actualizarTareas="actualizarDatos"/>
+
+              <!--Recorremos las tareas para mostrarlas en la celda correspondiente-->
               <div v-for="tarea in tareas" :key="tarea.id" class="m-2">
-                <div :draggable="true" @dragstart="eventodrag(tarea)" v-if="tablaMes[i - 1][j] === tarea.fecha"
-                  class="tarea">{{ tarea.tarea }}
+                <div :draggable="true" @dragstart="eventodrag(tarea)" v-if="tablaMes[i - 1][j] === tarea.fecha" class="tarea"> {{ tarea.tarea }}
                   <button @click="borrarTarea(tarea.id)" class="botonBorrar">Eliminar</button>
                   <button @click="abrirModalMod(tablaMes[i - 1][j], tarea.tarea, tarea.id)" class="botonModificar">Cambiar</button>
-                  <modalModificar :showModalMod="showModalMod" :fecha="fechaModalMod" :valor="valorMod" :id="idMod"
-                    @cerrar-modal-mod="cerrarModalMod" @actualizarTareas="actualizarDatos" />
+                  <modalModificar :showModalMod="showModalMod" :fecha="fechaModalMod" :valor="valorMod" :id="idMod" @cerrar-modal-mod="cerrarModalMod" @actualizarTareas="actualizarDatos" />
                 </div>
               </div>
             </div>
@@ -172,12 +165,12 @@ const tablaMes = computed(() => {
     </table>
     <div v-if="showModal" class="modal">
       <div class="modal-content">
-
         <span @click="cerrarModal" class="close">&times;</span>
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .tarea {
@@ -270,7 +263,6 @@ const tablaMes = computed(() => {
   color: black;
 }
 
-
 body {
   margin: 0;
   font-family: 'Times New Roman', Times, serif;
@@ -305,4 +297,4 @@ td {
   overflow: hidden;
   text-align: center;
 }
-</style>./modificarModal.vue
+</style>

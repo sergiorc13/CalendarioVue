@@ -1,15 +1,17 @@
 <script setup lang="ts">
-  import { defineProps, ref } from 'vue'
-  import axios from 'axios';
-  const emit = defineEmits(["cerrar-modal-mod", "actualizarTareas"])
+import { defineProps, ref } from 'vue'
+import axios from 'axios';
+const emit = defineEmits(["cerrar-modal-mod", "actualizarTareas"])
 
-  interface Props {
+interface Props {
   valor?: string;
   showModalMod:boolean
   fecha: string
   id: number
 }
+
 const tareaN = ref("")
+
 const modificarTarea = async(tareaNueva: string, fecha:string, idModificar:number)=>{
   const nuevaTarea = {
     id: idModificar,
@@ -31,24 +33,28 @@ const modificarTarea = async(tareaNueva: string, fecha:string, idModificar:numbe
 }
 
 const props = defineProps<Props>();
-  const cerrarModalMod = () => {
+
+const cerrarModalMod = () => {
     emit('cerrar-modal-mod');
-  };
+}
   
-  const cerrarModalEmitted = () => {
-    cerrarModalMod();
-  };
+const cerrarModalEmitted = () => {
+  cerrarModalMod();
+}
 </script>
+
+
 <template>
     <div class="modal-overlay" v-show="showModalMod">
     <div class="modal-container">
     <div class="modal-header">
-      <span class="modal-close" @click="cerrarModalMod">X</span>
+      <span class="modal-close" @click="cerrarModalMod">Cerrar</span>
     </div>
+
     <div class="modal-content">
-        <h3>{{ props.fecha }}</h3>
-        <p>Tarea: {{ props.valor }}</p>
-        <p>Id: {{ props.id }}</p>
+        <h3 class="fecha">{{ props.fecha }}</h3>
+        <p class="fecha">Tarea: {{ props.valor }}</p>
+        <p class="fecha">Id: {{ props.id }}</p>
         <input v-model="tareaN" type="text" class="form-control" placeholder="Modificar la tarea">
       <button @click="modificarTarea(tareaN, props.fecha, props.id)">Editar Tarea</button>
       <button @click="cerrarModalEmitted">Volver</button>
@@ -56,7 +62,6 @@ const props = defineProps<Props>();
   </div>
 </div>
 </template>
-
 
 
 <style scoped>
@@ -74,7 +79,7 @@ const props = defineProps<Props>();
   }
   
   .modal-container {
-    background: #fff;
+    background: #ae00ae;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 60%;
@@ -92,7 +97,7 @@ const props = defineProps<Props>();
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
-    color: #ff0000;
+    color: white;
   }
   
   .modal-content {
@@ -100,7 +105,7 @@ const props = defineProps<Props>();
   }
 
   button {
-  width: 30%;
+  width: 25%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -108,9 +113,15 @@ const props = defineProps<Props>();
   background-color: #007bff;
   color: white;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+.fecha {
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>

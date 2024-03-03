@@ -1,7 +1,4 @@
-<!-- celdaCalendario.vue -->
 <script setup lang="ts">
-import { defineProps } from 'vue';
-
 //Creamos la propiedad props que tiene el valor fecha 
 interface Props {
   valor?: string;
@@ -9,14 +6,15 @@ interface Props {
 
 //Creamos la variable que recoge este props creado anteriormente.
 const props = defineProps<Props>();
-
 </script>
+
 
 <template>
   <div class="celda-calendario">
     <p class="fecha">{{ props.valor }}</p>
   </div>
 </template>
+
 
 <style scoped>
 .celda-calendario {
