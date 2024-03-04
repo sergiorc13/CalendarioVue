@@ -14,6 +14,12 @@ const nombreMes = computed(() => {
   ]
   return meses[mes.value - 1]
 })
+
+// Ir al mes y año actual
+const irHoy = () => {
+  mes.value = new Date().getMonth() + 1
+  anio.value = new Date().getFullYear()
+}
 </script>
 
 
@@ -28,7 +34,9 @@ const nombreMes = computed(() => {
     <input type="number" v-model="anio" min="2000" max="2050"/>
   </div>
   <h2>{{ nombreMes }} del {{ anio }}</h2>
-  
+  <div class="hoy">
+    <button @click="irHoy">Ir a Hoy</button>
+  </div><br>
   <calendarioMes :mes="mes" :anio="anio" />
 </template>
 
@@ -74,4 +82,25 @@ const nombreMes = computed(() => {
     margin-left: 5px;
     margin-right: 10px;
   }
+
+  .hoy {
+    margin-top: 10px; 
+    text-align: center;
+  }
+  .hoy button {
+  background-color: #0056b3;
+  font-size: 20px;
+  text-align: center;
+  color: #fff;
+  border: none;
+  padding: 5px 7.5px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+button:hover {
+  background-color: #003a77;
+}
+
 </style>
