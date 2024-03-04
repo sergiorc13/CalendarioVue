@@ -35,7 +35,7 @@ const irHoy = () => {
   </div>
   <h2>{{ nombreMes }} del {{ anio }}</h2>
   <div class="hoy">
-    <button @click="irHoy">Ir a Hoy</button>
+    <button @click="irHoy">Ir al mes actual</button>
   </div><br>
   <calendarioMes :mes="mes" :anio="anio" />
 </template>
