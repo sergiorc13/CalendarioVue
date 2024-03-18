@@ -96,11 +96,9 @@ const borrarTarea = async (idBorrar: number) => {
 }
 
 const anadevalorSecuencial = (numero: number, valor: string, celdas: string[][]) => {
-  const fila = Math.floor(numero / props.COLS);
-  const columna = numero % props.COLS;
-  celdas[fila][columna] = valor;
-
-
+  const fila = Math.floor(numero / props.COLS)
+  const columna = numero % props.COLS
+  celdas[fila][columna] = valor
 }
 
 const fechaModal = ref<string>("")
@@ -110,7 +108,7 @@ const abrirModal = (fecha: string) => {
 }
 
 const cerrarModal = () => {
-  showModal.value = false;
+  showModal.value = false
 }
 
 const tablaMes = computed(() => {
@@ -139,12 +137,12 @@ const tablaMes = computed(() => {
       <tbody>
         <tr v-for="i in props.ROWS" :key="i">     
           <td v-for="(c, j) in cols" :key="c">
-            <div class="position-relative">
+            <div class="position-relative"  @dragover="eventoOver" @drop="eventoDrop(tablaMes[i - 1][j])">
               <!--Celda calendario va a recibir el valor de la fecha-->
-              <celdaCalendario :valor="tablaMes[i - 1][j]" class="p-3" />
+              <celdaCalendario :valor="tablaMes[i - 1][j]" class="p-3"/>
               <!--Hacemos un condicional para no permitir la posibilidad de agregar una tarea a una celda sin fecha.-->
               <div v-if="tablaMes[i - 1][j] != ''">
-                <button @dragover="eventoOver" @drop="eventoDrop(tablaMes[i - 1][j])"@click="abrirModal(tablaMes[i - 1][j])" class="botonAgregar"> + </button>
+                <button  @click="abrirModal(tablaMes[i - 1][j])" class="botonAgregar"> + </button>
               </div>
 
               <!--Modal para agregar tareas-->
